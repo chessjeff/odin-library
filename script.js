@@ -18,6 +18,7 @@ const booksList = document.querySelector('div.books');
 submitBook.addEventListener('click', function(event) {
     event.preventDefault();
     addBookToLibrary(titleInput, authorInput, pageCountInput);
+    //input fields are cleared for next input
     titleInput.value = '';
     authorInput.value = '';
     pageCountInput.value = '';
@@ -48,14 +49,8 @@ function printBooks() {
     })
 }
 
-
-
 const theHobbit = new Book('The Hobbit', 'J.R.R Tolkien', 295);
 const sirensOfTitan = new Book('The Sirens of Titan', 'Kurt Vonnegut', 326);
-
 myLibrary.push(theHobbit);
 myLibrary.push(sirensOfTitan);
-
-// addBookToLibrary(theHobbit);
-// addBookToLibrary(sirensOfTitan);
-
+printBooks();

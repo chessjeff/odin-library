@@ -1,0 +1,72 @@
+:root {
+    text-align: center;
+    font-size: 20px;
+    background-color: rgb(26, 111, 26);
+}
+
+body {
+    display: grid;
+    justify-content: center;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input {
+    margin-top: .2rem;
+    background-color: lime;
+    border: none;
+}
+
+form {
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    grid-template-areas: 
+    "title author"
+    "page-count add-book";
+    background-color: beige;
+    padding: 4vh;
+    border-radius: 12px;
+    box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.4);
+}
+
+.title {
+    grid-area: title;
+}
+
+.author {
+    grid-area: author;
+}
+
+.page-count {
+    grid-area: page-count;
+}
+
+.title,
+.author,
+.page-count {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.add-book {
+    padding: .5rem;
+    justify-self: center;
+    border-radius: 8px;
+    border: none;
+    background-color: fuchsia;
+    color: white;
+}
+
+.books {
+    margin-top: 1rem;
+    text-align: left;
+    color: lightcoral;
+}
+
