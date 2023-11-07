@@ -1,12 +1,21 @@
 :root {
     text-align: center;
     font-size: 20px;
-    background-color: rgb(26, 111, 26);
+    font-family: Arial, Helvetica, sans-serif;
+    background-color:darkcyan;
 }
 
-body {
+main {
     display: grid;
     justify-content: center;
+}
+
+h1 {
+    text-align: left;
+    margin: 1rem;
+    margin-left: 0;
+    font-size: 1.5rem;
+    color: white;
 }
 
 input::-webkit-outer-spin-button,
@@ -17,31 +26,38 @@ input::-webkit-inner-spin-button {
 
 input {
     margin-top: .2rem;
-    background-color: lime;
     border: none;
+    font-size: .7rem;
+    border-radius: 4px;
+}
+
+select {
+    border: none;
+}
+
+dialog {
+    border: none;
+    padding: 0;
+    border-radius: 12px;
+    box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.4);
+    background-color: lightblue;
+    border: 8px inset rgb(220, 146, 66);
 }
 
 form {
     display: grid;
     align-items: center;
     justify-content: center;
-    gap: .5rem;
+    gap: 1rem;
     grid-template-areas: 
     "title author"
-    "page-count add-book";
-    background-color: beige;
+    "page-count read"
+    "form-buttons form-buttons";
     padding: 4vh;
-    border-radius: 12px;
-    box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.4);
 }
 
-h1 {
-    text-align: left;
-    margin-top: 1rem;
-    margin-bottom: 0;
-    font-size: 1.5rem;
-    color: coral;
-}
+
+
 
 .title {
     grid-area: title;
@@ -57,24 +73,128 @@ h1 {
 
 .title,
 .author,
-.page-count {
+.page-count,
+.is-read {
     display: flex;
     flex-direction: column;
     text-align: left;
 }
 
-.add-book {
+.form-buttons{
+    grid-area: form-buttons;
+    display: flex;
+    justify-content: end;
+    
+}
+
+.add-book,
+.close-dialog {
     padding: .5rem;
-    justify-self: center;
     border-radius: 8px;
-    border: none;
-    background-color: fuchsia;
+    border: 1px solid white;   
+    font-size: 1rem;
+    margin-left: .4rem;
+}
+
+.add-book:hover,
+.close-dialog:hover {
+    border: 4px solid white;
+    padding: .35rem;
+    margin-left: .45rem;
+}
+
+.add-book {
+    background-color: rgb(220, 146, 66);
     color: white;
 }
 
-.books {
-    margin-top: 1rem;
-    text-align: left;
-    color: lightcoral;
+.header {
+    display: flex;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
 }
 
+.header > button {
+    background-color: rgba(0, 0, 0, 0.1);
+    border: none;
+    border-radius: 12px;
+    padding: .5rem;
+}
+
+.header > button:hover{
+    background-color: rgba(0, 0, 0, 0.4);
+    border: 1px solid white;
+    box-shadow: 0px 1px 2px black;
+}
+
+.header > button > div {
+    color: white;
+    padding: .1rem;
+    text-align: center;
+    position: relative;
+    /* left: .1vw; */
+    bottom: .1rem;
+    line-height: 1rem;
+    font-size: 2rem;
+}
+
+.books {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-template-rows: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+    text-align: left;
+    color: black;
+}
+
+.library {
+    display: flex;
+    flex-direction: column;
+}
+
+.book {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: .5rem;
+    grid-template-areas: 
+        "book-info book-info book-info"
+        ". read-button delete-button";
+    background-color: lightblue;
+    padding: 1vh 2vw;
+    height: 150px;
+    box-shadow: 0px 2px 5px black;
+    border-radius: 10px;
+    border-top: 10px solid rgb(220, 146, 66);
+}
+
+.book > p {
+    grid-area: book-info;
+    padding: 0;
+    margin: 0;
+    font-size: .9rem;
+    overflow-wrap: break-word;
+    hyphens:auto;
+}
+
+.book > button {
+    justify-self: center;
+    padding: .5rem;
+    border: none;
+    align-self: end;
+    border-radius: 8px;
+}
+
+.book > button:hover {
+    border: 1px solid white;
+    box-shadow: 0px 1px 3px black;
+}
+
+.read-status {
+    grid-area: read-button;
+
+}
+
+.delete {
+    grid-area: delete-button;
+}

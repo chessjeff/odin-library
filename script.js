@@ -17,29 +17,33 @@ const myLibrary = [],
     booksList = document.querySelector('div.books'),
     dialog = document.querySelector('dialog'),
     openDialog = document.getElementById('open-dialog'),
-    submitBook = document.getElementById('add-book'),
-    closeDialog = document.getElementById('close-dialog');
+    formButtons = Array.from(document.getElementsByClassName('form-button'));
+
 
 openDialog.addEventListener('click', () => {
-    dialog.showModal()
+    dialog.showModal();
 });
 
-submitBook.addEventListener('click', function(e) {
-    e.preventDefault();
-    addBookToLibrary(title, author, pageCount, isRead);
-    //input fields are cleared for next input
-    title.value = '';
-    author.value = '';
-    pageCount.value = '';
-    isRead.selectedIndex = 0;
-    printBooks();
-    dialog.close();
-});
-
-closeDialog.addEventListener('click', (e) => {
-    e.preventDefault();
-    dialog.close();
+formButtons.forEach((button) => {
+    button.addEventListener('click', function(e) {
+        e.preventDefault();
+        if (button.id === 'add-book') {
+            addBookToLibrary(title, author, pageCount, isRead);
+            printBooks();
+        }
+        //input fields are cleared for next input
+        [title.value, author.value, pageCount.value] = ['','','']
+        dialog.close();
+    }) 
 })
+
+function addBookToLibrary(title, author, pageCount, isRead) {
+    if (title.value && author.value && pageCount.value && isRead.value) {
+        isRead = isRead.value === '1' ? true : false; 
+        const newBook = new Book(title.value, author.value, pageCount.value, isRead);
+        myLibrary.push(newBook);
+    }
+}
 
 function enableDelete(deleteButton) {
     deleteButton.addEventListener('click', function() {
@@ -61,28 +65,21 @@ function enableToggle(readButton) {
 
 function toggleReadStatus(readButton) {
     const id = parseInt(readButton.id.slice(-3))
-    myLibrary[id].isRead = !myLibrary[id].isRead
+    myLibrary[id].isRead = !myLibrary[id].isRead;
     printBooks();
-}
-
-function addBookToLibrary(title, author, pageCount, isRead) {
-    if (title.value && author.value && pageCount.value && isRead.value) {
-        isRead = isRead.value === '1' ? true : false; 
-        const newBook = new Book(title.value, author.value, pageCount.value, isRead)
-        myLibrary.push(newBook)
-    }
 }
 
 function printBooks() {
     //clears list when new book is added
     while (booksList.firstChild) {
-        booksList.removeChild(booksList.firstChild)
+        booksList.removeChild(booksList.firstChild);
     };
     //displays all books at once
     for (let i = 0; i < myLibrary.length; i++) {
         const book = myLibrary[i];
         
         const bookDiv = document.createElement('div'),
+            bookInfo = document.createElement('p'),
             toggleReadButton = document.createElement('button'),
             deleteButton = document.createElement('button');
 
@@ -90,23 +87,23 @@ function printBooks() {
         bookDiv.classList.add('book');
         toggleReadButton.classList.add('read-status');
         deleteButton.classList.add('delete');
-        //incremented ids allow buttons to execute on any individual i
+        //incremented ids allow functions to be called on any individual button
         deleteButton.setAttribute('id', `delete-${i.toString().padStart(3, '0')}`);
-        toggleReadButton.setAttribute('id', `status-${i.toString().padStart(3, '0')}`)
-        //enableButtons
+        toggleReadButton.setAttribute('id', `status-${i.toString().padStart(3, '0')}`);
+        //enable buttons
         enableToggle(toggleReadButton);
         enableDelete(deleteButton);
         //add text to elements
-        bookDiv.textContent = book.info();
+        bookInfo.textContent = book.info();
         if (book.isRead) {
-            toggleReadButton.textContent = 'Read'
+            toggleReadButton.textContent = 'Read';
         } else {
-            toggleReadButton.textContent = 'Not Read'
+            toggleReadButton.textContent = 'Not Read';
         }
         deleteButton.textContent = 'Delete';
         //add elements to DOM
         booksList.appendChild(bookDiv);
-        bookDiv.append(toggleReadButton, deleteButton);
+        bookDiv.append(bookInfo, toggleReadButton, deleteButton);
     }
 }
 
