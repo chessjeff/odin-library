@@ -8,23 +8,24 @@ function Book(title, author, pageCount, isRead) {
     this.isRead = isRead;
 }
 
-const myLibrary = [];
+//Variables
+const myLibrary = [], 
+    title = document.getElementById('title'),
+    author = document.getElementById('author'),
+    pageCount = document.getElementById('page-count'),
+    isRead = document.getElementById('is-read'),
+    booksList = document.querySelector('div.books'),
+    dialog = document.querySelector('dialog'),
+    openDialog = document.getElementById('open-dialog'),
+    submitBook = document.getElementById('add-book'),
+    closeDialog = document.getElementById('close-dialog');
 
-//Dialog input variables
-const title = document.getElementById('title');
-const author = document.getElementById('author');
-const pageCount = document.getElementById('page-count');
-const isRead = document.getElementById('is-read');
-const booksList = document.querySelector('div.books');
-const dialog = document.querySelector('dialog');
-const openDialog = document.getElementById('open-dialog');
 openDialog.addEventListener('click', () => {
     dialog.showModal()
 });
 
-const submitBook = document.getElementById('add-book');
-submitBook.addEventListener('click', function(event) {
-    event.preventDefault();
+submitBook.addEventListener('click', function(e) {
+    e.preventDefault();
     addBookToLibrary(title, author, pageCount, isRead);
     //input fields are cleared for next input
     title.value = '';
@@ -35,30 +36,33 @@ submitBook.addEventListener('click', function(event) {
     dialog.close();
 });
 
-function enableDelete() {
-    const deleteButtons = Array.from(document.getElementsByClassName('delete'));
-    deleteButtons.forEach((button) => {
-        button.addEventListener('click', () => {
-            deleteBook(button.id);
-        })
+closeDialog.addEventListener('click', (e) => {
+    e.preventDefault();
+    dialog.close();
+})
+
+function enableDelete(deleteButton) {
+    deleteButton.addEventListener('click', function() {
+        deleteBook(deleteButton);
     })
 }
 
-function deleteBook(id) {
-    id = parseInt(id.slice(-3));
+function deleteBook(deleteButton) {
+    const id = parseInt(deleteButton.id.slice(-3));
     myLibrary.splice(id, 1);
     printBooks();
 }
 
-function toggleReadStatus() {
-    const toggleReadButtons = Array.from(document.getElementsByClassName('read-status'))
-    toggleReadButtons.forEach(function(button) {
-        button.addEventListener('click', function() {
-            const id = parseInt(button.id.slice(-3))
-            myLibrary[id].isRead = !myLibrary[id].isRead
-            console.log(myLibrary[id].isRead)
-        })
+function enableToggle(readButton) {
+    readButton.addEventListener('click', function() {
+        toggleReadStatus(readButton);
     })
+}
+
+function toggleReadStatus(readButton) {
+    const id = parseInt(readButton.id.slice(-3))
+    myLibrary[id].isRead = !myLibrary[id].isRead
+    printBooks();
 }
 
 function addBookToLibrary(title, author, pageCount, isRead) {
@@ -77,32 +81,33 @@ function printBooks() {
     //displays all books at once
     for (let i = 0; i < myLibrary.length; i++) {
         const book = myLibrary[i];
+        
+        const bookDiv = document.createElement('div'),
+            toggleReadButton = document.createElement('button'),
+            deleteButton = document.createElement('button');
 
-        const bookDiv = document.createElement('div');
-        const toggleReadButton = document.createElement('button');
-        const deleteButton = document.createElement('button');
-
+        //create elements
         bookDiv.classList.add('book');
         toggleReadButton.classList.add('read-status');
         deleteButton.classList.add('delete');
         //incremented ids allow buttons to execute on any individual i
         deleteButton.setAttribute('id', `delete-${i.toString().padStart(3, '0')}`);
         toggleReadButton.setAttribute('id', `status-${i.toString().padStart(3, '0')}`)
+        //enableButtons
+        enableToggle(toggleReadButton);
+        enableDelete(deleteButton);
+        //add text to elements
         bookDiv.textContent = book.info();
-        
-        // labelToggle();
         if (book.isRead) {
             toggleReadButton.textContent = 'Read'
         } else {
             toggleReadButton.textContent = 'Not Read'
         }
         deleteButton.textContent = 'Delete';
-        
+        //add elements to DOM
         booksList.appendChild(bookDiv);
         bookDiv.append(toggleReadButton, deleteButton);
     }
-    enableDelete();
-    toggleReadStatus();
 }
 
 const theHobbit = new Book('The Hobbit', 'J.R.R Tolkien', 295, 'read');
