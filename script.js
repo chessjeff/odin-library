@@ -1,11 +1,13 @@
-function Book(title, author, pageCount, isRead) {
-    this.title = title;
-    this.author = author;
-    this.pageCount = pageCount;
-    this.info = function() {
+class Book {
+    constructor(title, author, pageCount, isRead) {
+        this.title = title;
+        this.author = author;
+        this.pageCount = pageCount;
+        this.isRead = isRead;
+    }
+    info() {
         return `${this.title} by ${this.author}, ${this.pageCount} pages`;
     }
-    this.isRead = isRead;
 }
 
 //Variables
